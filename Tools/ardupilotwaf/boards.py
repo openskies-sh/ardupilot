@@ -358,11 +358,17 @@ class Board:
                 cfg.srcnode.find_dir('modules/uavcan/libuavcan/include').abspath()
             ]
 
+        env.INCLUDES += [
+            cfg.srcnode.find_dir('modules/libguardian/include/').abspath()
+        ]
+        env.CXXFLAGS += [
+            '-fexceptions' 
+        ] 
         if cfg.options.build_dates:
             env.build_dates = True
 
         # We always want to use PRI format macros
-        cfg.define('__STDC_FORMAT_MACROS', 1)
+        cfg.define('__STDC_FORMAT_MACROS_', 1)
 
         if cfg.options.disable_ekf2:
             env.CXXFLAGS += ['-DHAL_NAVEKF2_AVAILABLE=0']
@@ -548,6 +554,9 @@ class sitl(Board):
 
         env.LIB += [
             'm',
+            'ssl',
+            'crypto',
+            'dl'
         ]
 
         cfg.check_librt(env)
